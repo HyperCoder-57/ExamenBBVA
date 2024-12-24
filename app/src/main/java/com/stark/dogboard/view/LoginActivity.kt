@@ -4,12 +4,19 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
+
+
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Observer
+import com.stark.dogboard.R
 import com.stark.dogboard.databinding.ActivityLoginBinding
 import com.stark.dogboard.viewmodel.LoginViewModel
-
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -29,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun autenticarUsuario() {
 
+
         if ((binding.editTextUsuario.text.toString()
                 .trim() == username || binding.editTextUsuario.text.toString()
                 .trim() == email) && binding.editTextPassword.text.toString().trim() == password
@@ -36,8 +44,6 @@ class LoginActivity : AppCompatActivity() {
 
             loginViewModel.login(username, email, password).observe(this) { response ->
                 if (response != null) {
-
-
 
 
                     val intent = Intent(this, MainActivity::class.java).apply {

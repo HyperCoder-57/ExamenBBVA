@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         binding.txtID.setText(id)
         binding.txtGenero.setText(gender)
         binding.txtEdad.setText(age)
+
     }
 
     private fun initObservers() {
