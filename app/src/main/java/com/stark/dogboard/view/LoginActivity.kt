@@ -2,91 +2,92 @@ package com.stark.dogboard.view
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.EditText
-
-
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Observer
-import com.stark.dogboard.R
 import com.stark.dogboard.databinding.ActivityLoginBinding
 import com.stark.dogboard.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityLoginBinding
     private val loginViewModel: LoginViewModel by viewModels()
-
-    private val username = "admin"
-    private val email = "correo@ejemplo.com"
-    private val password = "admin"
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         initListeners()
         initObservers()
     }
 
     private fun autenticarUsuario() {
+        val inputUser = binding.editTextUsuario.text.toString().trim()
+        val inputPass = binding.editTextPassword.text.toString().trim()
 
-
-        if ((binding.editTextUsuario.text.toString()
-                .trim() == username || binding.editTextUsuario.text.toString()
-                .trim() == email) && binding.editTextPassword.text.toString().trim() == password
-        )
-
-            loginViewModel.login(username, email, password).observe(this) { response ->
+        if ((inputUser == "admin" || inputUser == "correo@ejemplo.com") && inputPass == "admin") {
+            loginViewModel.login(inputUser, inputUser, inputPass).observe(this) { response ->
                 if (response != null) {
-
+                    editor.putString("auth_token", "dummy_token")
+                    editor.apply()
 
                     val intent = Intent(this, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        putExtra("name", response.name.toString())
+                        putExtra("lastName", response.lastName.toString())
+                        putExtra("id", response.id.toString())
+                        putExtra("gender", response.gender.toString())
+                        putExtra("age", response.age.toString())
                     }
 
-
-                    intent.putExtra("name", response.name.toString())
-                    intent.putExtra("lastName", response.lastName.toString())
-                    intent.putExtra("id", response.id.toString())
-                    intent.putExtra("gender",response.gender.toString())
-                    intent.putExtra("age", response.age.toString())
-
-
                     startActivity(intent)
+                    finish()
                 } else {
-                    AlertDialog.Builder(this).setTitle("Error")
-                        .setMessage("No se puede iniciar sesión")
-                        .setPositiveButton("OK", null).show()
+                    showErrorDialog("No se puede iniciar sesión. Intente nuevamente.")
                 }
             }
+        } else {
+            Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun initListeners() {
-        setEditTextListener(binding.editTextUsuario) { loginViewModel.textUserChange(it) }
-        setEditTextListener(binding.editTextPassword) { loginViewModel.textPassChange(it) }
+        binding.editTextUsuario.addTextChangedListener {
+            loginViewModel.textUserChange(it.toString().trim())
+        }
 
-        binding.btnIngresar.setOnClickListener { autenticarUsuario() }
-    }
+        binding.editTextPassword.addTextChangedListener {
+            loginViewModel.textPassChange(it.toString().trim())
+        }
 
-    private fun setEditTextListener(editText: EditText, onTextChanged: (String) -> Unit) {
-        editText.addTextChangedListener { edit -> onTextChanged(edit.toString().trim()) }
+        binding.btnIngresar.setOnClickListener {
+            autenticarUsuario()
+        }
     }
 
     private fun initObservers() {
         loginViewModel.isBtnEnabled.observe(this) { isEnabled ->
             binding.btnIngresar.isEnabled = isEnabled
-
-            if (isEnabled) {
-                // binding.btnIngresar.setBackgroundColor("@Color")
-            } else {
-
-            }
+            binding.btnIngresar.alpha = if (isEnabled) 1.0f else 0.5f
         }
+    }
+
+    private fun showErrorDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Error")
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .show()
     }
 }

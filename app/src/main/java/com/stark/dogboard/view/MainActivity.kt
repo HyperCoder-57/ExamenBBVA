@@ -2,6 +2,7 @@ package com.stark.dogboard.view
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -19,16 +20,18 @@ class MainActivity : AppCompatActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding;
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initListeners()
         initObservers()
         initComponents()
-
 
     }
 
@@ -59,7 +62,6 @@ class MainActivity : AppCompatActivity() {
                     .error(R.drawable.user)
                     .into(binding.avatar)
 
-
             }else {
                 AlertDialog.Builder(this)
                     .setTitle("Error")
@@ -73,11 +75,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListeners() {
         binding.btnLogout.setOnClickListener {
+
+            val editor = sharedPreferences.edit()
+            editor.remove("auth_token")
+            editor.apply()
+
             val intent = Intent(this, LoginActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
             startActivity(intent)
-
+            finish()
         }
     }
 }

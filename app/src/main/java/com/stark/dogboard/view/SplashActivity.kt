@@ -6,11 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class SplashActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
 
+        val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("auth_token", null)
+
+        if (token == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+        } else {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+        finish()
     }
 }
