@@ -27,6 +27,24 @@ class MainActivity : AppCompatActivity() {
 
         initListeners()
         initObservers()
+        initComponents()
+
+
+    }
+
+    private fun initComponents() {
+
+        val name = intent.getStringExtra("name")
+        val lastName = intent.getStringExtra("lastName")
+        val id = intent.getStringExtra("id")
+        val gender = intent.getStringExtra("gender")
+        val age = intent.getStringExtra("age")
+
+        binding.txtNombre.setText(name)
+        binding.txtApellido.setText(lastName)
+        binding.txtID.setText(id)
+        binding.txtGenero.setText(gender)
+        binding.txtEdad.setText(age)
     }
 
     private fun initObservers() {

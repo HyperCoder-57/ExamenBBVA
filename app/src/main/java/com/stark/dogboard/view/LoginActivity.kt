@@ -36,18 +36,29 @@ class LoginActivity : AppCompatActivity() {
 
             loginViewModel.login(username, email, password).observe(this) { response ->
                 if (response != null) {
+
+
+
+
                     val intent = Intent(this, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
+
+
+                    intent.putExtra("name", response.name.toString())
+                    intent.putExtra("lastName", response.lastName.toString())
+                    intent.putExtra("id", response.id.toString())
+                    intent.putExtra("gender",response.gender.toString())
+                    intent.putExtra("age", response.age.toString())
+
+
                     startActivity(intent)
                 } else {
-
                     AlertDialog.Builder(this).setTitle("Error")
-                        .setMessage("No se pudo cargar la foto de perfil")
+                        .setMessage("No se puede iniciar sesión")
                         .setPositiveButton("OK", null).show()
                 }
             }
-
     }
 
     private fun initListeners() {
