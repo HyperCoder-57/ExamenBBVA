@@ -16,7 +16,8 @@
 
         <activity
             android:name=".view.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.DogBoard.Splash">
 
             <intent-filter>
             <action android:name="android.intent.action.MAIN" />

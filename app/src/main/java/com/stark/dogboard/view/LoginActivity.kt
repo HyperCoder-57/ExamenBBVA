@@ -3,7 +3,9 @@ package com.stark.dogboard.view
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -21,6 +23,12 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val decorView = window.decorView
+            val uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            decorView.systemUiVisibility = uiOptions
+        }
+
 
         sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
         editor = sharedPreferences.edit()
