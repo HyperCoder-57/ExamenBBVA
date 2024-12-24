@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
                         putExtra("lastName", response.lastName.toString())
                         putExtra("id", response.id.toString())
                         putExtra("gender", response.gender.toString())
-                        putExtra("age", response.age.toString())
+                        putExtra("age", response.age.toString()+" años")
                     }
 
                     startActivity(intent)

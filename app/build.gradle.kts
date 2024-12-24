@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.lifecycle.livedata.ktx)
 
     implementation ("com.squareup.picasso:picasso:2.8")
+    implementation ("com.google.code.gson:gson:2.10.1")
+
 
 
     testImplementation(libs.junit)

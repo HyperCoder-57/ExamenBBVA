@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        android:padding="16dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -19,20 +20,18 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-
             <ImageView
                 android:id="@+id/avatar"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:contentDescription="TODO"
                 android:src="@drawable/user"
-                android:layout_marginEnd="16dp"
-                android:scaleType="centerCrop"
-                android:layout_weight="1"/>
-
+            android:layout_marginEnd="16dp"
+            android:scaleType="fitCenter"  />
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:layout_weight="3">
@@ -87,8 +86,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
-        android:backgroundTint="@color/darkblue"
         android:text="@string/logout"/>
-
 
 </RelativeLayout>
