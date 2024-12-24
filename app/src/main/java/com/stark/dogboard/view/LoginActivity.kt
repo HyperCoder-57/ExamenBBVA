@@ -46,10 +46,18 @@ class LoginActivity : AppCompatActivity() {
 
                     val intent = Intent(this, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        var genero: String
+
+                        if(response.gender.toString() == "male"){
+                            genero = "Masculino"
+                        }else{
+                            genero = "Femenino"
+                        }
+
                         putExtra("name", response.name.toString())
                         putExtra("lastName", response.lastName.toString())
                         putExtra("id", response.id.toString())
-                        putExtra("gender", response.gender.toString())
+                        putExtra("gender",genero )
                         putExtra("age", response.age.toString()+" años")
                     }
 
